@@ -1,0 +1,1074 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AgendaPro – Sistema de Agendamento Online</title>
+  <meta name="description" content="Sistema de agendamento online para o seu negócio. Seus clientes agendam pelo celular, você gerencia tudo em um painel completo." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    :root {
+      --bg: #0b0c0f;
+      --bg2: #13151a;
+      --bg3: #1a1d24;
+      --border: rgba(255, 255, 255, 0.08);
+      --border2: rgba(255, 255, 255, 0.14);
+      --text: #f0f0ef;
+      --muted: #8a8b94;
+      --accent: #4ade80;
+      --accent2: #22c55e;
+      --accent-dim: rgba(74, 222, 128, 0.1);
+      --accent-dim2: rgba(74, 222, 128, 0.18);
+      --gold: #f59e0b;
+      --gold-dim: rgba(245, 158, 11, 0.12);
+      --blue: #60a5fa;
+      --blue-dim: rgba(96, 165, 250, 0.1);
+      --red: #f87171;
+      --radius: 12px;
+      --radius-lg: 18px;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      font-size: 16px;
+      overflow-x: hidden;
+    }
+
+    h1, h2, h3, h4 {
+      font-family: 'Syne', sans-serif;
+      font-weight: 700;
+      line-height: 1.2;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      background: rgba(11, 12, 15, 0.88);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+      border-bottom: 0.5px solid var(--border);
+      padding: 0 6%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 64px;
+    }
+
+    .nav-logo {
+      font-family: 'Syne', sans-serif;
+      font-size: 20px;
+      font-weight: 800;
+      color: var(--accent);
+      letter-spacing: -0.5px;
+      text-decoration: none;
+    }
+    .nav-logo span { color: var(--text); }
+
+    .nav-links {
+      display: flex;
+      gap: 28px;
+      list-style: none;
+      align-items: center;
+    }
+    .nav-links a {
+      color: var(--muted);
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: 400;
+      transition: color 0.2s;
+    }
+    .nav-links a:hover { color: var(--text); }
+
+    .nav-cta {
+      background: var(--accent) !important;
+      color: #000 !important;
+      font-weight: 600 !important;
+      padding: 8px 20px;
+      border-radius: 8px;
+      font-size: 14px;
+      transition: background 0.2s, transform 0.15s;
+    }
+    .nav-cta:hover { background: var(--accent2) !important; transform: translateY(-1px); }
+
+    .nav-toggle {
+      display: none;
+      background: none;
+      border: none;
+      color: var(--text);
+      font-size: 22px;
+      cursor: pointer;
+    }
+
+    /* ── HERO ── */
+    .hero {
+      padding: 148px 6% 100px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: -120px; left: 50%;
+      transform: translateX(-50%);
+      width: 700px; height: 500px;
+      background: radial-gradient(ellipse at center, rgba(74, 222, 128, 0.13) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--accent-dim2);
+      border: 0.5px solid rgba(74, 222, 128, 0.35);
+      color: var(--accent);
+      font-size: 13px;
+      font-weight: 500;
+      padding: 6px 18px;
+      border-radius: 100px;
+      margin-bottom: 28px;
+    }
+    .hero-badge::before {
+      content: '●';
+      font-size: 8px;
+      animation: blink 2s infinite;
+    }
+    @keyframes blink {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.25; }
+    }
+
+    .hero h1 {
+      font-size: clamp(36px, 6vw, 72px);
+      font-weight: 800;
+      letter-spacing: -2px;
+      margin-bottom: 24px;
+      max-width: 820px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    .hero h1 .highlight { color: var(--accent); }
+
+    .hero-sub {
+      color: var(--muted);
+      font-size: 18px;
+      max-width: 520px;
+      margin: 0 auto 44px;
+      line-height: 1.75;
+      font-weight: 300;
+    }
+
+    .hero-btns {
+      display: flex;
+      gap: 14px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .btn-primary {
+      background: var(--accent);
+      color: #000;
+      font-weight: 600;
+      font-size: 15px;
+      padding: 14px 32px;
+      border-radius: 10px;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      transition: background 0.2s, transform 0.15s;
+      font-family: 'DM Sans', sans-serif;
+    }
+    .btn-primary:hover { background: var(--accent2); transform: translateY(-2px); }
+
+    .btn-secondary {
+      background: transparent;
+      color: var(--text);
+      font-weight: 500;
+      font-size: 15px;
+      padding: 14px 32px;
+      border-radius: 10px;
+      text-decoration: none;
+      border: 0.5px solid var(--border2);
+      transition: border-color 0.2s, background 0.2s;
+      font-family: 'DM Sans', sans-serif;
+    }
+    .btn-secondary:hover {
+      border-color: rgba(255, 255, 255, 0.3);
+      background: rgba(255, 255, 255, 0.04);
+    }
+
+    /* ── SECTIONS ── */
+    .section { padding: 88px 6%; }
+    .section-center { text-align: center; }
+
+    .section-label {
+      font-size: 12px;
+      font-weight: 500;
+      letter-spacing: 2.5px;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 12px;
+    }
+    .section-title {
+      font-size: clamp(26px, 4vw, 42px);
+      letter-spacing: -1px;
+      margin-bottom: 14px;
+    }
+    .section-sub {
+      color: var(--muted);
+      font-size: 16px;
+      max-width: 480px;
+      margin: 0 auto 48px;
+      font-weight: 300;
+      line-height: 1.7;
+    }
+
+    .section-divider {
+      height: 0.5px;
+      background: var(--border);
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    /* ── FEATURES ── */
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 16px;
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    .feature-card {
+      background: var(--bg2);
+      border: 0.5px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 30px;
+      transition: border-color 0.2s, background 0.2s, transform 0.2s;
+    }
+    .feature-card:hover {
+      border-color: var(--border2);
+      background: var(--bg3);
+      transform: translateY(-3px);
+    }
+
+    .feature-icon {
+      font-size: 30px;
+      margin-bottom: 16px;
+      display: block;
+    }
+    .feature-title {
+      font-family: 'Syne', sans-serif;
+      font-size: 17px;
+      font-weight: 600;
+      margin-bottom: 8px;
+    }
+    .feature-desc {
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.7;
+      font-weight: 300;
+    }
+
+    /* ── FINANCEIRO ── */
+    .financial-showcase {
+      max-width: 900px;
+      margin: 0 auto;
+      background: var(--bg2);
+      border: 0.5px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 36px;
+    }
+    .fin-title {
+      font-family: 'Syne', sans-serif;
+      font-size: 20px;
+      font-weight: 700;
+      margin-bottom: 28px;
+    }
+    .fin-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+      margin-bottom: 28px;
+    }
+    .fin-metric {
+      background: var(--bg3);
+      border-radius: var(--radius);
+      padding: 18px;
+      border: 0.5px solid var(--border);
+    }
+    .fin-metric-label {
+      font-size: 12px;
+      color: var(--muted);
+      margin-bottom: 6px;
+    }
+    .fin-metric-value {
+      font-family: 'Syne', sans-serif;
+      font-size: 22px;
+      font-weight: 700;
+    }
+    .fin-metric-value.green { color: var(--accent); }
+    .fin-metric-value.red   { color: var(--red); }
+    .fin-metric-value.blue  { color: var(--blue); }
+
+    .fin-bar-label {
+      font-size: 13px;
+      color: var(--muted);
+      margin-bottom: 12px;
+      font-weight: 300;
+    }
+    .fin-bar-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 10px;
+    }
+    .fin-bar-name {
+      font-size: 13px;
+      width: 90px;
+      color: var(--muted);
+      flex-shrink: 0;
+    }
+    .fin-bar-track {
+      flex: 1;
+      height: 6px;
+      background: rgba(255, 255, 255, 0.06);
+      border-radius: 100px;
+      overflow: hidden;
+    }
+    .fin-bar-fill {
+      height: 100%;
+      border-radius: 100px;
+    }
+    .fin-bar-val {
+      font-size: 13px;
+      font-weight: 500;
+      width: 65px;
+      text-align: right;
+      flex-shrink: 0;
+    }
+
+    /* ── VIDEO ── */
+    .video-wrapper {
+      max-width: 860px;
+      margin: 0 auto;
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      border: 0.5px solid var(--border2);
+      background: var(--bg2);
+      aspect-ratio: 16/9;
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .video-placeholder {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 18px;
+      background: var(--bg2);
+    }
+
+    .play-icon {
+      width: 64px; height: 64px;
+      background: var(--accent-dim2);
+      border: 0.5px solid rgba(74, 222, 128, 0.35);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 24px;
+    }
+
+    .video-placeholder p {
+      color: var(--muted);
+      font-size: 14px;
+      font-weight: 300;
+    }
+
+    .video-url-form {
+      display: flex;
+      gap: 10px;
+      padding: 0 32px;
+      width: 100%;
+      max-width: 520px;
+    }
+    .video-url-input {
+      flex: 1;
+      background: rgba(255, 255, 255, 0.06);
+      border: 0.5px solid var(--border2);
+      border-radius: 8px;
+      color: var(--text);
+      font-size: 13px;
+      padding: 10px 14px;
+      outline: none;
+      font-family: 'DM Sans', sans-serif;
+      transition: border-color 0.2s;
+    }
+    .video-url-input::placeholder { color: var(--muted); }
+    .video-url-input:focus { border-color: var(--accent); }
+
+    .video-url-btn {
+      background: var(--accent);
+      color: #000;
+      font-weight: 600;
+      font-size: 13px;
+      padding: 10px 20px;
+      border-radius: 8px;
+      border: none;
+      cursor: pointer;
+      font-family: 'DM Sans', sans-serif;
+      white-space: nowrap;
+      transition: background 0.2s;
+    }
+    .video-url-btn:hover { background: var(--accent2); }
+
+    #video-frame {
+      display: none;
+      width: 100%;
+      height: 100%;
+      border: none;
+    }
+
+    /* ── PHOTOS ── */
+    .photos-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 14px;
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    .photo-slot {
+      aspect-ratio: 4/3;
+      background: var(--bg2);
+      border: 0.5px dashed var(--border2);
+      border-radius: var(--radius);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      color: var(--muted);
+      font-size: 13px;
+      cursor: pointer;
+      transition: border-color 0.2s, background 0.2s;
+      position: relative;
+      overflow: hidden;
+      user-select: none;
+    }
+    .photo-slot:hover {
+      border-color: rgba(74, 222, 128, 0.45);
+      background: var(--accent-dim);
+    }
+    .photo-slot input[type="file"] {
+      position: absolute;
+      inset: 0;
+      opacity: 0;
+      cursor: pointer;
+      width: 100%;
+      height: 100%;
+    }
+    .photo-slot .slot-icon { font-size: 26px; pointer-events: none; }
+    .photo-slot span { pointer-events: none; }
+
+    .photo-slot.has-image { border-style: solid; border-color: var(--border2); }
+    .photo-slot.has-image img {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    .photo-slot .slot-overlay {
+      position: absolute;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.55);
+      opacity: 0;
+      transition: opacity 0.2s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 13px;
+      color: #fff;
+      pointer-events: none;
+    }
+    .photo-slot.has-image:hover .slot-overlay { opacity: 1; }
+
+    /* ── PLANS ── */
+    .plans-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 16px;
+      max-width: 920px;
+      margin: 0 auto;
+    }
+
+    .plan-card {
+      background: var(--bg2);
+      border: 0.5px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 32px 28px;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      transition: border-color 0.2s, transform 0.2s;
+      position: relative;
+      overflow: hidden;
+    }
+    .plan-card:hover { transform: translateY(-4px); }
+    .plan-card.featured {
+      border: 1.5px solid var(--accent);
+      background: var(--bg3);
+    }
+    .plan-card.featured::before {
+      content: '';
+      position: absolute;
+      top: -60px; right: -60px;
+      width: 200px; height: 200px;
+      background: radial-gradient(circle, rgba(74, 222, 128, 0.14) 0%, transparent 70%);
+    }
+
+    .plan-badge {
+      display: inline-block;
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      padding: 4px 12px;
+      border-radius: 100px;
+      width: fit-content;
+      margin-bottom: 4px;
+    }
+    .plan-badge.green { background: var(--accent-dim2); color: var(--accent); }
+    .plan-badge.gold  { background: var(--gold-dim); color: var(--gold); }
+    .plan-badge.blue  { background: var(--blue-dim); color: var(--blue); }
+
+    .plan-name {
+      font-family: 'Syne', sans-serif;
+      font-size: 24px;
+      font-weight: 700;
+      margin-top: 4px;
+    }
+    .plan-tagline {
+      color: var(--muted);
+      font-size: 14px;
+      font-weight: 300;
+      margin-top: 2px;
+    }
+    .plan-divider { height: 0.5px; background: var(--border); }
+
+    .plan-features {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      flex: 1;
+    }
+    .plan-features li {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      font-size: 14px;
+      color: var(--muted);
+      line-height: 1.55;
+      font-weight: 300;
+    }
+    .plan-features li::before {
+      content: '✓';
+      color: var(--accent);
+      font-weight: 700;
+      font-size: 13px;
+      margin-top: 1px;
+      flex-shrink: 0;
+    }
+
+    .plan-cta {
+      display: block;
+      text-align: center;
+      padding: 14px;
+      border-radius: 10px;
+      font-weight: 600;
+      font-size: 15px;
+      text-decoration: none;
+      transition: all 0.2s;
+      font-family: 'DM Sans', sans-serif;
+      margin-top: auto;
+    }
+    .plan-cta.primary { background: var(--accent); color: #000; }
+    .plan-cta.primary:hover { background: var(--accent2); transform: translateY(-1px); }
+    .plan-cta.outline {
+      background: transparent;
+      color: var(--text);
+      border: 0.5px solid var(--border2);
+    }
+    .plan-cta.outline:hover {
+      background: rgba(255, 255, 255, 0.05);
+      border-color: rgba(255, 255, 255, 0.28);
+    }
+
+    /* ── CTA FINAL ── */
+    .cta-section {
+      padding: 100px 6%;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .cta-section::before {
+      content: '';
+      position: absolute;
+      bottom: -80px; left: 50%;
+      transform: translateX(-50%);
+      width: 600px; height: 400px;
+      background: radial-gradient(ellipse at center, rgba(74, 222, 128, 0.10) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .cta-box {
+      max-width: 640px;
+      margin: 0 auto;
+      background: var(--bg2);
+      border: 0.5px solid var(--border2);
+      border-radius: 24px;
+      padding: 56px 48px;
+      position: relative;
+    }
+    .cta-box h2 {
+      font-size: clamp(28px, 4vw, 38px);
+      letter-spacing: -1px;
+      margin-bottom: 14px;
+    }
+    .cta-box p {
+      color: var(--muted);
+      font-size: 16px;
+      font-weight: 300;
+      margin-bottom: 36px;
+      line-height: 1.7;
+    }
+
+    .wpp-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      background: #25d366;
+      color: #000;
+      font-weight: 700;
+      font-size: 16px;
+      padding: 16px 36px;
+      border-radius: 12px;
+      text-decoration: none;
+      transition: background 0.2s, transform 0.15s;
+      font-family: 'DM Sans', sans-serif;
+    }
+    .wpp-btn:hover { background: #1ebe5d; transform: translateY(-2px); }
+    .wpp-icon { width: 22px; height: 22px; fill: #000; flex-shrink: 0; }
+
+    /* ── FOOTER ── */
+    footer {
+      border-top: 0.5px solid var(--border);
+      padding: 32px 6%;
+      text-align: center;
+      color: var(--muted);
+      font-size: 13px;
+      font-weight: 300;
+    }
+    footer span { color: var(--accent); }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 768px) {
+      .nav-links { display: none; }
+      .nav-links.open {
+        display: flex;
+        flex-direction: column;
+        position: fixed;
+        top: 64px; left: 0; right: 0;
+        background: var(--bg);
+        padding: 24px 6%;
+        border-bottom: 0.5px solid var(--border);
+        gap: 20px;
+        z-index: 99;
+      }
+      .nav-toggle { display: block; }
+      .fin-grid { grid-template-columns: 1fr; }
+      .photos-grid { grid-template-columns: repeat(2, 1fr); }
+      .cta-box { padding: 36px 24px; }
+      .video-url-form { flex-direction: column; padding: 0 20px; }
+    }
+
+    @media (max-width: 480px) {
+      .photos-grid { grid-template-columns: 1fr 1fr; }
+      .financial-showcase { padding: 24px 18px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ── NAV ── -->
+<nav>
+  <a href="#" class="nav-logo">Agenda<span>Pro</span></a>
+  <ul class="nav-links" id="nav-links">
+    <li><a href="#funcionalidades" onclick="closeNav()">Funcionalidades</a></li>
+    <li><a href="#demonstracao" onclick="closeNav()">Demonstração</a></li>
+    <li><a href="#planos" onclick="closeNav()">Planos</a></li>
+    <li>
+      <a href="https://wa.me/5561995724244?text=Olá!%20Quero%20saber%20mais%20sobre%20o%20sistema%20de%20agendamento." class="nav-cta" target="_blank" rel="noopener">Contratar →</a>
+    </li>
+  </ul>
+  <button class="nav-toggle" onclick="toggleNav()" aria-label="Menu">☰</button>
+</nav>
+
+<!-- ── HERO ── -->
+<section class="hero">
+  <div class="hero-badge">Sistema 100% online · Sem aplicativo</div>
+  <h1>Agendamento online<br><span class="highlight">para o seu negócio</span></h1>
+  <p class="hero-sub">Seus clientes agendam pelo celular, você gerencia tudo em um painel completo. Simples assim.</p>
+  <div class="hero-btns">
+    <a href="https://wa.me/5561995724244?text=Olá!%20Quero%20saber%20mais%20sobre%20o%20sistema%20de%20agendamento." class="btn-primary" target="_blank" rel="noopener">
+      Quero contratar →
+    </a>
+    <a href="#demonstracao" class="btn-secondary">Ver demonstração</a>
+  </div>
+</section>
+
+<div class="section-divider"></div>
+
+<!-- ── FUNCIONALIDADES ── -->
+<section class="section section-center" id="funcionalidades">
+  <div class="section-label">Funcionalidades</div>
+  <h2 class="section-title">Tudo que você precisa</h2>
+  <p class="section-sub">Da página de agendamento ao controle financeiro, tudo em um só lugar.</p>
+
+  <div class="features-grid">
+    <div class="feature-card">
+      <span class="feature-icon">📅</span>
+      <div class="feature-title">Página personalizada</div>
+      <div class="feature-desc">Sua logo, suas cores e seus horários. A página de agendamento é totalmente sua.</div>
+    </div>
+    <div class="feature-card">
+      <span class="feature-icon">📲</span>
+      <div class="feature-title">Notificações via WhatsApp</div>
+      <div class="feature-desc">Clientes recebem confirmações e lembretes direto no WhatsApp, sem app adicional.</div>
+    </div>
+    <div class="feature-card">
+      <span class="feature-icon">⏳</span>
+      <div class="feature-title">Lista de espera automática</div>
+      <div class="feature-desc">Cancelou? O próximo da lista é avisado automaticamente. Zero trabalho manual.</div>
+    </div>
+    <div class="feature-card">
+      <span class="feature-icon">📊</span>
+      <div class="feature-title">Painel admin completo</div>
+      <div class="feature-desc">Visualize agenda, histórico de clientes, relatórios e muito mais em um painel simples.</div>
+    </div>
+    <div class="feature-card">
+      <span class="feature-icon">🎯</span>
+      <div class="feature-title">Promoções por dia da semana</div>
+      <div class="feature-desc">Configure preços especiais para dias específicos e atraia mais clientes nos horários vazios.</div>
+    </div>
+    <div class="feature-card">
+      <span class="feature-icon">📸</span>
+      <div class="feature-title">Portfólio de fotos</div>
+      <div class="feature-desc">Exiba seus trabalhos diretamente na página de agendamento para encantar novos clientes.</div>
+    </div>
+    <div class="feature-card">
+      <span class="feature-icon">👥</span>
+      <div class="feature-title">Histórico de clientes</div>
+      <div class="feature-desc">Acesse o histórico completo de cada cliente: agendamentos, preferências e muito mais.</div>
+    </div>
+    <div class="feature-card">
+      <span class="feature-icon">🕐</span>
+      <div class="feature-title">Horários configuráveis</div>
+      <div class="feature-desc">Defina seus horários de atendimento, intervalos e dias de folga com total flexibilidade.</div>
+    </div>
+  </div>
+</section>
+
+<div class="section-divider"></div>
+
+<!-- ── FINANCEIRO ── -->
+<section class="section section-center">
+  <div class="section-label">Financeiro</div>
+  <h2 class="section-title">Controle financeiro completo</h2>
+  <p class="section-sub">Saiba exatamente quanto entra, quanto sai e qual é o seu lucro real.</p>
+
+  <div class="financial-showcase">
+    <div class="fin-title">Visão do mês — exemplo</div>
+    <div class="fin-grid">
+      <div class="fin-metric">
+        <div class="fin-metric-label">Faturamento</div>
+        <div class="fin-metric-value blue">R$ 8.400</div>
+      </div>
+      <div class="fin-metric">
+        <div class="fin-metric-label">Gastos</div>
+        <div class="fin-metric-value red">R$ 2.100</div>
+      </div>
+      <div class="fin-metric">
+        <div class="fin-metric-label">Lucro</div>
+        <div class="fin-metric-value green">R$ 6.300</div>
+      </div>
+    </div>
+    <div class="fin-bar-label">Despesas por categoria</div>
+    <div class="fin-bar-row">
+      <span class="fin-bar-name">Aluguel</span>
+      <div class="fin-bar-track"><div class="fin-bar-fill" style="width:75%; background:#60a5fa;"></div></div>
+      <span class="fin-bar-val" style="color:#60a5fa;">R$ 900</span>
+    </div>
+    <div class="fin-bar-row">
+      <span class="fin-bar-name">Produtos</span>
+      <div class="fin-bar-track"><div class="fin-bar-fill" style="width:50%; background:#f59e0b;"></div></div>
+      <span class="fin-bar-val" style="color:#f59e0b;">R$ 600</span>
+    </div>
+    <div class="fin-bar-row">
+      <span class="fin-bar-name">Equipamentos</span>
+      <div class="fin-bar-track"><div class="fin-bar-fill" style="width:25%; background:#f87171;"></div></div>
+      <span class="fin-bar-val" style="color:#f87171;">R$ 300</span>
+    </div>
+    <div class="fin-bar-row">
+      <span class="fin-bar-name">Outros</span>
+      <div class="fin-bar-track"><div class="fin-bar-fill" style="width:25%; background:#a78bfa;"></div></div>
+      <span class="fin-bar-val" style="color:#a78bfa;">R$ 300</span>
+    </div>
+  </div>
+</section>
+
+<div class="section-divider"></div>
+
+<!-- ── VÍDEO ── -->
+<section class="section section-center" id="demonstracao">
+  <div class="section-label">Demonstração</div>
+  <h2 class="section-title">Veja o sistema em ação</h2>
+  <p class="section-sub">Cole o link de um vídeo do YouTube ou Vimeo para exibir a demonstração do sistema.</p>
+
+  <div class="video-wrapper">
+    <div class="video-placeholder" id="video-placeholder">
+      <div class="play-icon">▶</div>
+      <p>Adicione o link do seu vídeo abaixo</p>
+      <div class="video-url-form">
+        <input
+          class="video-url-input"
+          type="text"
+          id="video-url-input"
+          placeholder="https://youtube.com/watch?v=... ou https://vimeo.com/..."
+        />
+        <button class="video-url-btn" onclick="loadVideo()">Carregar</button>
+      </div>
+    </div>
+    <iframe id="video-frame" allowfullscreen title="Demonstração do sistema"></iframe>
+  </div>
+</section>
+
+<div class="section-divider"></div>
+
+<!-- ── FOTOS ── -->
+<section class="section section-center">
+  <div class="section-label">Galeria</div>
+  <h2 class="section-title">Mostre seus trabalhos</h2>
+  <p class="section-sub">Clique em cada espaço para adicionar fotos do seu negócio.</p>
+
+  <div class="photos-grid" id="photos-grid"></div>
+</section>
+
+<div class="section-divider"></div>
+
+<!-- ── PLANOS ── -->
+<section class="section section-center" id="planos">
+  <div class="section-label">Planos</div>
+  <h2 class="section-title">Escolha o plano ideal</h2>
+  <p class="section-sub">Para saber os valores e ativar seu acesso, fale direto pelo WhatsApp.</p>
+
+  <div class="plans-grid">
+    <!-- BÁSICO -->
+    <div class="plan-card">
+      <div>
+        <div class="plan-badge blue">Básico</div>
+        <div class="plan-name">Básico</div>
+        <div class="plan-tagline">Para quem está começando</div>
+      </div>
+      <div class="plan-divider"></div>
+      <ul class="plan-features">
+        <li>Até 100 agendamentos/mês</li>
+        <li>Até 5 serviços cadastrados</li>
+        <li>Lista de espera (10 entradas)</li>
+        <li>Financeiro parcial</li>
+        <li>Notificações via WhatsApp</li>
+        <li>Página personalizada</li>
+      </ul>
+      <a href="https://wa.me/5561995724244?text=Olá!%20Tenho%20interesse%20no%20Plano%20Básico." class="plan-cta outline" target="_blank" rel="noopener">Contratar via WhatsApp →</a>
+    </div>
+
+    <!-- PRO (destaque) -->
+    <div class="plan-card featured">
+      <div>
+        <div class="plan-badge green">Mais popular</div>
+        <div class="plan-name">Pro</div>
+        <div class="plan-tagline">Para negócios em crescimento</div>
+      </div>
+      <div class="plan-divider"></div>
+      <ul class="plan-features">
+        <li>Até 300 agendamentos/mês</li>
+        <li>Até 15 serviços cadastrados</li>
+        <li>Lista de espera (30 entradas)</li>
+        <li>Financeiro completo com gráficos</li>
+        <li>Notificações via WhatsApp</li>
+        <li>Portfólio de fotos</li>
+        <li>Promoções por dia da semana</li>
+        <li>Histórico completo de clientes</li>
+      </ul>
+      <a href="https://wa.me/5561995724244?text=Olá!%20Tenho%20interesse%20no%20Plano%20Pro." class="plan-cta primary" target="_blank" rel="noopener">Contratar via WhatsApp →</a>
+    </div>
+
+    <!-- PREMIUM -->
+    <div class="plan-card">
+      <div>
+        <div class="plan-badge gold">Premium</div>
+        <div class="plan-name">Premium</div>
+        <div class="plan-tagline">Para quem não quer limites</div>
+      </div>
+      <div class="plan-divider"></div>
+      <ul class="plan-features">
+        <li>Agendamentos ilimitados</li>
+        <li>Serviços ilimitados</li>
+        <li>Lista de espera ilimitada</li>
+        <li>Financeiro completo com gráficos</li>
+        <li>Notificações via WhatsApp</li>
+        <li>Portfólio de fotos</li>
+        <li>Promoções por dia da semana</li>
+        <li>Histórico completo de clientes</li>
+      </ul>
+      <a href="https://wa.me/5561995724244?text=Olá!%20Tenho%20interesse%20no%20Plano%20Premium." class="plan-cta outline" target="_blank" rel="noopener">Contratar via WhatsApp →</a>
+    </div>
+  </div>
+</section>
+
+<div class="section-divider"></div>
+
+<!-- ── CTA FINAL ── -->
+<section class="cta-section" id="contato">
+  <div class="cta-box">
+    <h2>Pronto para começar?</h2>
+    <p>Fale com a gente agora e ative seu acesso em minutos. Tire todas as suas dúvidas pelo WhatsApp.</p>
+    <a href="https://wa.me/5561995724244?text=Olá!%20Quero%20saber%20mais%20sobre%20o%20sistema%20de%20agendamento%20online." class="wpp-btn" target="_blank" rel="noopener">
+      <svg class="wpp-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/>
+      </svg>
+      Falar no WhatsApp
+    </a>
+  </div>
+</section>
+
+<!-- ── FOOTER ── -->
+<footer>
+  <p>© 2025 AgendaPro · Sistema de Agendamento Online · Feito com <span>♥</span></p>
+</footer>
+
+<script>
+  // ── NAV MOBILE ──
+  function toggleNav() {
+    document.getElementById('nav-links').classList.toggle('open');
+  }
+  function closeNav() {
+    document.getElementById('nav-links').classList.remove('open');
+  }
+  document.addEventListener('click', function(e) {
+    const nav = document.getElementById('nav-links');
+    if (!nav.contains(e.target) && !e.target.classList.contains('nav-toggle')) {
+      nav.classList.remove('open');
+    }
+  });
+
+  // ── VIDEO ──
+  function loadVideo() {
+    const input = document.getElementById('video-url-input').value.trim();
+    let embedUrl = '';
+
+    if (input.includes('youtube.com/watch')) {
+      try {
+        const v = new URL(input).searchParams.get('v');
+        if (v) embedUrl = 'https://www.youtube.com/embed/' + v + '?autoplay=1';
+      } catch (e) {}
+    } else if (input.includes('youtu.be/')) {
+      const v = input.split('youtu.be/')[1].split('?')[0];
+      embedUrl = 'https://www.youtube.com/embed/' + v + '?autoplay=1';
+    } else if (input.includes('vimeo.com/')) {
+      const v = input.split('vimeo.com/')[1].split('?')[0];
+      embedUrl = 'https://player.vimeo.com/video/' + v + '?autoplay=1';
+    }
+
+    if (embedUrl) {
+      document.getElementById('video-placeholder').style.display = 'none';
+      const frame = document.getElementById('video-frame');
+      frame.src = embedUrl;
+      frame.style.display = 'block';
+    } else {
+      alert('Link inválido. Use um link do YouTube (youtube.com/watch?v=... ou youtu.be/...) ou Vimeo.');
+    }
+  }
+
+  document.getElementById('video-url-input').addEventListener('keydown', function(e) {
+    if (e.key === 'Enter') loadVideo();
+  });
+
+  // ── PHOTOS ──
+  const photosGrid = document.getElementById('photos-grid');
+  const NUM_SLOTS = 6;
+
+  for (let i = 0; i < NUM_SLOTS; i++) {
+    const slot = document.createElement('div');
+    slot.className = 'photo-slot';
+    slot.innerHTML = `
+      <span class="slot-icon">📷</span>
+      <span>Adicionar foto</span>
+      <input type="file" accept="image/*" aria-label="Adicionar foto ${i + 1}" />
+    `;
+    const fileInput = slot.querySelector('input[type="file"]');
+    fileInput.addEventListener('change', (function(idx, s) {
+      return function(e) {
+        const file = e.target.files[0];
+        if (!file) return;
+        const reader = new FileReader();
+        reader.onload = function(ev) {
+          s.classList.add('has-image');
+          s.innerHTML = `
+            <img src="${ev.target.result}" alt="Foto ${idx + 1}" />
+            <div class="slot-overlay">Trocar foto</div>
+            <input type="file" accept="image/*" aria-label="Trocar foto ${idx + 1}" />
+          `;
+          s.querySelector('input[type="file"]').addEventListener('change', function(e2) {
+            const f2 = e2.target.files[0];
+            if (!f2) return;
+            const r2 = new FileReader();
+            r2.onload = function(ev2) {
+              s.querySelector('img').src = ev2.target.result;
+            };
+            r2.readAsDataURL(f2);
+          });
+        };
+        reader.readAsDataURL(file);
+      };
+    })(i, slot));
+    photosGrid.appendChild(slot);
+  }
+</script>
+</body>
+</html>
