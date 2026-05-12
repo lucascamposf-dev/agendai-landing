@@ -1,6 +1,0 @@
-{
-  "deploy": {
-    "startCommand": "python -m http.server $PORT",
-    "restartPolicyType": "ON_FAILURE"
-  }
-}
