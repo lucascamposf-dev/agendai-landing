@@ -9,6 +9,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600&display=swap" rel="stylesheet" />
   <style>
+    [hidden] { display: none !important; }
     *, *::before, *::after {
       box-sizing: border-box;
       margin: 0;
@@ -731,7 +732,7 @@
   <a href="#" class="nav-logo">Agenda<span>Pro</span></a>
   <ul class="nav-links" id="nav-links">
     <li><a href="#funcionalidades" onclick="closeNav()">Funcionalidades</a></li>
-    <li><a href="#demonstracao" onclick="closeNav()">Demonstração</a></li>
+
     <li><a href="#planos" onclick="closeNav()">Planos</a></li>
     <li>
       <a href="https://wa.me/5561995724244?text=Olá!%20Quero%20saber%20mais%20sobre%20o%20sistema%20de%20agendamento." class="nav-cta" target="_blank" rel="noopener">Contratar →</a>
@@ -749,7 +750,7 @@
     <a href="https://wa.me/5561995724244?text=Olá!%20Quero%20saber%20mais%20sobre%20o%20sistema%20de%20agendamento." class="btn-primary" target="_blank" rel="noopener">
       Quero contratar →
     </a>
-    <a href="#demonstracao" class="btn-secondary">Ver demonstração</a>
+    <a href="#planos" class="btn-secondary">Ver planos</a>
   </div>
 </section>
 
@@ -856,7 +857,7 @@
 <div class="section-divider"></div>
 
 <!-- ── VÍDEO ── -->
-<section class="section section-center" id="demonstracao">
+<section hidden class="section section-center" id="demonstracao">
   <div class="section-label">Demonstração</div>
   <h2 class="section-title">Veja o sistema em ação</h2>
   <p class="section-sub">Cole o link de um vídeo do YouTube ou Vimeo para exibir a demonstração do sistema.</p>
@@ -879,10 +880,10 @@
   </div>
 </section>
 
-<div class="section-divider"></div>
+<div hidden class="section-divider"></div>
 
 <!-- ── FOTOS ── -->
-<section class="section section-center">
+<section hidden class="section section-center">
   <div class="section-label">Galeria</div>
   <h2 class="section-title">Mostre seus trabalhos</h2>
   <p class="section-sub">Clique em cada espaço para adicionar fotos do seu negócio.</p>
@@ -890,7 +891,7 @@
   <div class="photos-grid" id="photos-grid"></div>
 </section>
 
-<div class="section-divider"></div>
+<div hidden class="section-divider"></div>
 
 <!-- ── PLANOS ── -->
 <section class="section section-center" id="planos">
